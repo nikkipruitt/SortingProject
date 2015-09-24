@@ -1,64 +1,54 @@
 public class MergeSort
 {
-  private int[] numbers, helper;
+  private int[] numbers, assistingArray;
   
   private int number;
   
   public static void main (String [] args){
     MergeSort mSort = new MergeSort();
     int [] arr = {0,1,6,2,3,57,54,2,1};
-    mSort.sort(arr);
+    mSort.startSorting(arr);
     for(int i = 0; i<arr.length; i++){
       System.out.println(mSort.numbers[i]);
     }
   }
 
-  public void sort(int[] values) {
+  public void startSorting(int[] values) {
     this.numbers = values;
     number = values.length;
-    this.helper = new int[number];
-    mergesort(0, number - 1);
+    this.assistingArray = new int[number];
+    arrMerger(0, number - 1);
   }
 
-  private void mergesort(int low, int high) {
-    // check if low is smaller then high, if not then the array is sorted
+  private void arrMerger(int low, int high) {
     if (low < high) {
-      // Get the index of the element which is in the middle
       int middle = low + (high - low) / 2;
-      // Sort the left side of the array
-      mergesort(low, middle);
-      // Sort the right side of the array
-      mergesort(middle + 1, high);
-      // Combine them both
-      merge(low, middle, high);
+      arrMerger(low, middle);
+      arrMerger(middle + 1, high);
+      mergeSort(low, middle, high);
     }
   }
 
-  private void merge(int low, int middle, int high) {
-
-    // Copy both parts into the helper array
+  private void mergeSort(int low, int middle, int high) {
     for (int i = low; i <= high; i++) {
-      helper[i] = numbers[i];
+      assistingArray[i] = numbers[i];
     }
 
     int i = low;
     int j = middle + 1;
     int k = low;
-    // Copy the smallest values from either the left or the right side back
-    // to the original array
     while (i <= middle && j <= high) {
-      if (helper[i] <= helper[j]) {
-        numbers[k] = helper[i];
+      if (assistingArray[i] <= assistingArray[j]) {
+        numbers[k] = assistingArray[i];
         i++;
       } else {
-        numbers[k] = helper[j];
+        numbers[k] = assistingArray[j];
         j++;
       }
       k++;
     }
-    // Copy the rest of the left side of the array into the target array
     while (i <= middle) {
-      numbers[k] = helper[i];
+      numbers[k] = assistingArray[i];
       k++;
       i++;
     }
